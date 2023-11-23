@@ -1,0 +1,30 @@
+diff --git a/Makefile b/Makefile
+index 8978d22..670e9df 100644
+--- a/Makefile
++++ b/Makefile
+@@ -32,9 +32,9 @@ BINDIR  ?= $(PREFIX)/bin
+ DATADIR ?= $(PREFIX)/share
+ DOCDIR  ?= $(DATADIR)/doc
+ 
+-VERSION ?= $(shell git describe --match 'v[0-9]*' --dirty='.m' --always --tags)
++VERSION ?= $(shell git describe --match 'v[0-9]*' --always --tags)
+ VERSION_TRIMMED := $(VERSION:v%=%)
+-REVISION ?= $(shell git rev-parse HEAD)$(shell if ! git diff --no-ext-diff --quiet --exit-code; then echo .m; fi)
++REVISION ?= $(shell git rev-parse HEAD)
+ 
+ GO_BUILD_LDFLAGS ?= -s -w
+ GO_BUILD_FLAGS ?=
+@@ -102,10 +102,10 @@ artifacts: clean
+ 	GOOS=freebsd GOARCH=amd64     make -C $(CURDIR)  binaries
+ 	tar $(TAR_OWNER0_FLAGS) $(TAR_FLATTEN_FLAGS) -czvf $(CURDIR)/_output/nerdctl-$(VERSION_TRIMMED)-freebsd-amd64.tar.gz _output/nerdctl
+ 
+-	rm -f $(CURDIR)/_output/nerdctl $(CURDIR)/_output/nerdctl.exe
++	GOOS=linux GOARCH=loong64       make -C $(CURDIR) binaries
++	tar $(TAR_OWNER0_FLAGS) $(TAR_FLATTEN_FLAGS) -czvf $(CURDIR)/_output/nerdctl-$(VERSION_TRIMMED)-linux-loong64.tar.gz   _output/nerdctl extras/rootless/*
+ 
+-	$(call make_artifact_full_linux,amd64)
+-	$(call make_artifact_full_linux,arm64)
++	rm -f $(CURDIR)/_output/nerdctl $(CURDIR)/_output/nerdctl.exe
+ 
+ 	go mod vendor
+ 	tar $(TAR_OWNER0_FLAGS) -czf $(CURDIR)/_output/nerdctl-$(VERSION_TRIMMED)-go-mod-vendor.tar.gz go.mod go.sum vendor
