@@ -1,6 +1,6 @@
 FROM golang:1.21-buster as builder
 
-ARG NERDCTL_VERSION=v1.7.0
+ARG NERDCTL_VERSION=v1.7.5
 
 ENV NERDCTL_VERSION=${NERDCTL_VERSION}
 ENV GOPROXY=https://goproxy.io
