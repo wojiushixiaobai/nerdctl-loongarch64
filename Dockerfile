@@ -1,6 +1,6 @@
 FROM golang:1.21-buster as builder
 
-ARG NERDCTL_VERSION=v1.7.0
+ARG NERDCTL_VERSION=v1.7.6
 
 ENV NERDCTL_VERSION=${NERDCTL_VERSION}
 ENV GOPROXY=https://goproxy.io
@@ -16,7 +16,6 @@ ADD Makefile.patch /opt/Makefile.patch
 
 RUN set -ex; \
     git apply /opt/Makefile.patch; \
-    sed -i 's@github.com/cilium/ebpf v0.9.1@github.com/cilium/ebpf v0.12.3@g' go.mod; \
     go mod tidy
 
 RUN set -ex; \
